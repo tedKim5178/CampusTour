@@ -2,6 +2,7 @@ package com.mac.mk.campustour.activity.search;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -82,6 +83,7 @@ public class Searcher {
 			appId = applicationContext.getPackageName();
 		}
 		String url = buildKeywordSearchApiUrlString(query, latitude, longitude, radius, page, apikey);
+		Log.d("Search", "url test: " + url);
 		searchTask = new SearchTask();
 		searchTask.execute(url);
     }

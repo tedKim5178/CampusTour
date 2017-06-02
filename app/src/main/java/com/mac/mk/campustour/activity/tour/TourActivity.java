@@ -6,9 +6,17 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mac.mk.campustour.R;
+import com.mac.mk.campustour.activity.data.Tour;
 import com.mac.mk.campustour.activity.maketour.MakeTourActivity;
 import com.mac.mk.campustour.activity.tour.adapter.TourAdapter;
 import com.melnykov.fab.FloatingActionButton;
@@ -27,13 +35,16 @@ public class TourActivity extends AppCompatActivity{
 
     private static final String TAG = "TourActivity";
 
+    // View Injection
     @Bind(R.id.tour_recyclerview)
     RecyclerView mRecyclerView;
     @Bind(R.id.floating_action_btn)
     FloatingActionButton mFloatingBtn;
 
+    // Objects
     private TourAdapter tourAdapter;
-    private ArrayList tourItemList;
+    private ArrayList<Tour> tourItemList;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +52,6 @@ public class TourActivity extends AppCompatActivity{
 
         ButterKnife.bind(this);
 
-        // TODO :: make recyclerview and adapter
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -49,10 +59,39 @@ public class TourActivity extends AppCompatActivity{
         tourItemList = new ArrayList();
 
         // TODO:: 뿌려줄 리스트는 파이어베이스에서 플랜정보이다.
-        tourItemList.add("1");tourItemList.add("1");tourItemList.add("1");tourItemList.add("1");tourItemList.add("1");
-        tourItemList.add("1");tourItemList.add("1");tourItemList.add("1");tourItemList.add("1");tourItemList.add("1");
-        tourItemList.add("1");tourItemList.add("1");tourItemList.add("1");tourItemList.add("1");tourItemList.add("1");
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("tour");
+        ref.addChildEventListener(new ChildEventListener() {
 
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                Tour tour = dataSnapshot.getValue(Tour.class);
+                tourItemList.add(tour);
+                Log.d(TAG, "hello : " + tour.gettName() + " ,  " + tour.gettAddress() + " , " + tour.gettSchoolName() + tourItemList.size());
+                tourAdapter.setTourItemList(tourItemList);
+                tourAdapter.notifyDataSetChanged();
+                
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
 
         tourAdapter = new TourAdapter(tourItemList);
         mRecyclerView.setAdapter(tourAdapter);

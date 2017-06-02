@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mac.mk.campustour.R;
+import com.mac.mk.campustour.activity.data.Tour;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,7 @@ import butterknife.Bind;
 
 public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHolder>{
 
-    private ArrayList tourList;
+    private ArrayList<Tour> tourList;
 
     public TourAdapter(ArrayList tourList){
         this.tourList = tourList;
@@ -35,7 +36,9 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
 
     @Override
     public void onBindViewHolder(TourAdapter.TourItemViewHolder holder, int position) {
-        holder.tourName_tv.setText("Hello!");
+        holder.tName_tv.setText(tourList.get(position).gettName());
+        holder.tSchool_tv.setText(tourList.get(position).gettSchoolName());
+        holder.tAddress_tv.setText(tourList.get(position).gettAddress());
     }
 
     @Override
@@ -47,12 +50,19 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
     public final static class TourItemViewHolder
             extends RecyclerView.ViewHolder {
 
-        TextView tourName_tv;
-
+        TextView tName_tv;
+        TextView tSchool_tv;
+        TextView tAddress_tv;
         public TourItemViewHolder(View itemView) {
             super(itemView);
-            tourName_tv = (TextView)itemView.findViewById(R.id.tourName_tv);
+            tName_tv = (TextView)itemView.findViewById(R.id.tName_tv);
+            tSchool_tv = (TextView)itemView.findViewById(R.id.tSchool_tv);
+            tAddress_tv = (TextView) itemView.findViewById(R.id.tAddress_tv);
         }
         // ViewHolder
+    }
+
+    public void setTourItemList(ArrayList<Tour> tour){
+        this.tourList = tour;
     }
 }

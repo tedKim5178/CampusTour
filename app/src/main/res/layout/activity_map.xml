@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/v05_guideline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="19dp" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/v95_guideline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="365dp" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/h10_guideline"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.10"
+        tools:layout_editor_absoluteY="26dp"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/h85_guideline"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85"
+        tools:layout_editor_absoluteY="435dp"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <LinearLayout
+        android:id="@+id/search_linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/h10_guideline"
+        app:layout_constraintRight_toLeftOf="@+id/v95_guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/v05_guideline">
+
+        <EditText
+            android:id="@+id/restaurant_query_et"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/restaurant_query_btn"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/map_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/h85_guideline"
+        app:layout_constraintRight_toLeftOf="@+id/v95_guideline"
+        app:layout_constraintLeft_toRightOf="@+id/v05_guideline"
+        app:layout_constraintTop_toTopOf="@+id/h10_guideline">
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/search_result_linear_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/v05_guideline"
+        app:layout_constraintRight_toLeftOf="@+id/v95_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/h85_guideline">
+
+        <LinearLayout
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/restaurant_title_tv"
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+            <TextView
+                android:id="@+id/restaurant_address_tv"
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/select_map_btn"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

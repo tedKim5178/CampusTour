@@ -4,8 +4,19 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tourName_tv"
+        android:id="@+id/tName_tv"
         android:text="Hello RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tSchool_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tAddress_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

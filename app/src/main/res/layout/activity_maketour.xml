@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+
+    <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <LinearLayout
-
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,6 +83,7 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:id="@+id/specification_et"
             android:hint="상세 모집 내용을 입력하세요"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -103,29 +101,29 @@
 
             <EditText
                 android:id="@+id/restaurant_et"
+                android:clickable="false"
                 android:layout_weight="3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/restaurant_btn"
-                android:text="검색"
+                android:id="@+id/restaurant_add_btn"
+                android:text="+"
+                android:textSize="16dp"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/map_view"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
-        </FrameLayout>
+            android:layout_height="100dp">
+        </RelativeLayout>
 
         <Button
             android:id="@+id/register_tour_btn"
             android:text="투어참여"
-            android:onClick="btnClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
-</ScrollView>
