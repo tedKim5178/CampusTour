@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "570427040889",
+    "firebase_url": "https://fir-campustour.firebaseio.com",
+    "project_id": "firebase-campustour",
+    "storage_bucket": "firebase-campustour.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:570427040889:android:a88fa5c416ec5761",
+        "android_client_info": {
+          "package_name": "com.mac.mk.campustour"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "570427040889-vbouapsuue6jiurunksa7m8eoqiurt7t.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "570427040889-okc89jb4n4p7jfasf7b9d5mdf015slm1.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "570427040889-e4o8if8j6dl63k6gmcjs45prfs7dr0gp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mac.mk.campustour",
+            "certificate_hash": "46ae79c4551033a80eb5add66da805073e6deac8"
+          }
+        },
+        {
+          "client_id": "570427040889-0gl4i1bsjdfqdj1ntfq4ds1apu631m2m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7tXDTPqmCKuAB6IecjLFuZxaACwHxhqE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "570427040889-vbouapsuue6jiurunksa7m8eoqiurt7t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Spinner
+        android:entries="@array/userType"
+        android:spinnerMode="dialog"
+        android:id="@+id/userTypeSpinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"></Spinner>
+    <ImageView
+        android:paddingTop="50dp"
+        android:layout_gravity="center"
+        android:src="@drawable/university"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="#1B97F3"
+        android:gravity="center"
+        android:textSize="28dp"
+        android:text="Univercity Tour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/content"
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp"
+        android:layout_marginBottom="40dp"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:onClick="selectClick"
+        android:textColor="#fff"
+        android:text="Select"
+        android:background="#1B97F3"
+        android:layout_gravity="center"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
