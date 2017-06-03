@@ -19,6 +19,7 @@ import com.mac.mk.campustour.R;
 import com.mac.mk.campustour.activity.data.Tour;
 import com.mac.mk.campustour.activity.maketour.MakeTourActivity;
 import com.mac.mk.campustour.activity.tour.adapter.TourAdapter;
+import com.mac.mk.campustour.activity.tourdetail.TourDetailActivity;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.lang.reflect.Array;
@@ -31,7 +32,7 @@ import butterknife.ButterKnife;
  * Created by mk on 2017. 5. 31..
  */
 
-public class TourActivity extends AppCompatActivity{
+public class TourActivity extends AppCompatActivity implements TourAdapter.ListItemClickListener{
 
     private static final String TAG = "TourActivity";
 
@@ -68,7 +69,8 @@ public class TourActivity extends AppCompatActivity{
 
                 Tour tour = dataSnapshot.getValue(Tour.class);
                 tourItemList.add(tour);
-                Log.d(TAG, "hello : " + tour.gettName() + " ,  " + tour.gettAddress() + " , " + tour.gettSchoolName() + tourItemList.size());
+                Log.d(TAG, "hello : " + tour.gettName()  + " , " + tour.gettSchoolName() + tourItemList.size());
+                Log.d(TAG, "hello : " + tour.getRestaurants().get(0).getAddress());
                 tourAdapter.setTourItemList(tourItemList);
                 tourAdapter.notifyDataSetChanged();
                 
@@ -93,7 +95,7 @@ public class TourActivity extends AppCompatActivity{
             public void onCancelled(DatabaseError databaseError) { }
         });
 
-        tourAdapter = new TourAdapter(tourItemList);
+        tourAdapter = new TourAdapter(tourItemList, getApplicationContext(), this);
         mRecyclerView.setAdapter(tourAdapter);
 
         mFloatingBtn.attachToRecyclerView(mRecyclerView);
@@ -106,5 +108,12 @@ public class TourActivity extends AppCompatActivity{
                 startActivityForResult(intent, 0);
             }
         });
+    }
+
+    @Override
+    public void onListItemClick(Tour tour) {
+        Intent intent = new Intent(getApplicationContext(), TourDetailActivity.class);
+        intent.putExtra("tour", tour);
+        startActivity(intent);
     }
 }

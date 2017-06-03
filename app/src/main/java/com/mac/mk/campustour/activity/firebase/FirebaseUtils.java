@@ -2,7 +2,10 @@ package com.mac.mk.campustour.activity.firebase;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mac.mk.campustour.activity.data.Restaurant;
 import com.mac.mk.campustour.activity.data.Tour;
+
+import java.util.ArrayList;
 
 /**
  * Created by mk on 2017. 6. 2..

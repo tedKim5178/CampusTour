@@ -53,8 +53,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <EditText
-                    android:id="@+id/school_et"
+                <AutoCompleteTextView
+                    android:id="@+id/sName_auto_et"
                     android:hint="학교이름을 입력하세요"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -95,31 +95,31 @@
 
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:id="@+id/restaurant_add_layout"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/restaurant_et"
-                android:clickable="false"
-                android:layout_weight="3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/restaurant_et"
+                    android:text="맛집정보를 추가해주세요"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/restaurant_add_btn"
+                    android:text="+"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/restaurant_add_btn"
-                android:text="+"
-                android:textSize="16dp"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" />
         </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/map_view"
-            android:layout_width="match_parent"
-            android:layout_height="100dp">
-        </RelativeLayout>
 
         <Button
             android:id="@+id/register_tour_btn"

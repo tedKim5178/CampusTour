@@ -1,6 +1,10 @@
 package com.mac.mk.campustour.activity.tour.adapter;
 
+import android.app.LauncherActivity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +12,7 @@ import android.widget.TextView;
 
 import com.mac.mk.campustour.R;
 import com.mac.mk.campustour.activity.data.Tour;
+import com.mac.mk.campustour.activity.tourdetail.TourDetailActivity;
 
 import java.util.ArrayList;
 
@@ -19,10 +24,23 @@ import butterknife.Bind;
 
 public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHolder>{
 
-    private ArrayList<Tour> tourList;
+    // Tag for comments
+    private static final String TAG = "TourAdapter";
 
-    public TourAdapter(ArrayList tourList){
+    // Objects
+    private ArrayList<Tour> tourList;
+    private Context mContext;
+    final private ListItemClickListener mOnClickListener;
+
+    // define Interface to click listener
+    public interface ListItemClickListener{
+        void onListItemClick(Tour tour);
+    }
+
+    public TourAdapter(ArrayList tourList, Context context, ListItemClickListener listener){
         this.tourList = tourList;
+        this.mContext = context;
+        this.mOnClickListener = listener;
     }
 
     @Override
@@ -36,9 +54,10 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
 
     @Override
     public void onBindViewHolder(TourAdapter.TourItemViewHolder holder, int position) {
+
+        Log.d(TAG, "adapterTest : " + position);
         holder.tName_tv.setText(tourList.get(position).gettName());
         holder.tSchool_tv.setText(tourList.get(position).gettSchoolName());
-        holder.tAddress_tv.setText(tourList.get(position).gettAddress());
     }
 
     @Override
@@ -47,8 +66,8 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
     }
 
     //View holder
-    public final static class TourItemViewHolder
-            extends RecyclerView.ViewHolder {
+    public class TourItemViewHolder
+            extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView tName_tv;
         TextView tSchool_tv;
@@ -58,11 +77,20 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
             tName_tv = (TextView)itemView.findViewById(R.id.tName_tv);
             tSchool_tv = (TextView)itemView.findViewById(R.id.tSchool_tv);
             tAddress_tv = (TextView) itemView.findViewById(R.id.tAddress_tv);
+            Log.d(TAG, "onClickTest 생성자: ");
+            itemView.setOnClickListener(this);
         }
-        // ViewHolder
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            Tour tour = tourList.get(position);
+            mOnClickListener.onListItemClick(tour);
+        }
     }
 
     public void setTourItemList(ArrayList<Tour> tour){
         this.tourList = tour;
     }
+
 }

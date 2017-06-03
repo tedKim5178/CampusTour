@@ -1,10 +1,13 @@
 package com.mac.mk.campustour.activity.data;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Created by mk on 2017. 6. 2..
  */
 
-public class Tour {
+public class Tour implements Serializable{
 
     // 작성자
     private String tWriter;
@@ -12,26 +15,36 @@ public class Tour {
     private String tName;
     // 학교 이름
     private String tSchoolName;
+
+    public String gettKey() {
+        return tKey;
+    }
+
+    public void settKey(String tKey) {
+        this.tKey = tKey;
+    }
+
+    // 학교 Key
+    private String tKey;
     // 상세 내용
     private String tSpecification;
-    // 맛집 이름
-    private String tRestaurantName;
-    // 맛집 주소
-    private String tAddress;
-    // 맛집 위도
-    private double latitute;
-    // 맛집 경도
-    private double longitude;
+    // 맛집 리스트
+    private ArrayList<Restaurant> restaurants;
+
+    public Tour(){
+
+    }
+    public ArrayList<Restaurant> getRestaurants() {
+        return restaurants;
+    }
+
+    public void setRestaurants(ArrayList<Restaurant> restaurants) {
+        this.restaurants = restaurants;
+    }
+
     // 모집 인원
     private int capacity;
 
-    public String gettAddress() {
-        return tAddress;
-    }
-
-    public void settAddress(String tAddress) {
-        this.tAddress = tAddress;
-    }
 
     public String gettWriter() {
         return tWriter;
@@ -63,30 +76,6 @@ public class Tour {
 
     public void settSpecification(String tSpecification) {
         this.tSpecification = tSpecification;
-    }
-
-    public String gettRestaurantName() {
-        return tRestaurantName;
-    }
-
-    public void settRestaurantName(String tRestaurantName) {
-        this.tRestaurantName = tRestaurantName;
-    }
-
-    public double getLatitute() {
-        return latitute;
-    }
-
-    public void setLatitute(double latitute) {
-        this.latitute = latitute;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     public int getCapacity() {
