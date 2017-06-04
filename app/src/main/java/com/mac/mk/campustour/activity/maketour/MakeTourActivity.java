@@ -61,10 +61,10 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
     private final static int MOVE_TO_MAP_ACTIVITY = 9001;
 
     // View Injection
+    @Bind(R.id.writer_et)
+    EditText writer_et;
     @Bind(R.id.name_et)
     EditText name_et;
-    @Bind(R.id.title_et)
-    EditText title_et;
     @Bind(R.id.sName_auto_et)
     AutoCompleteTextView sName_auto_et;
     @Bind(R.id.capacity_et)
@@ -159,7 +159,9 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
     }
 
     public void SettingTourInformation(){
+
         this.tour.settName(name_et.getText().toString());
+        this.tour.settWriter(writer_et.getText().toString());
         this.tour.settSchoolName(sName_auto_et.getText().toString());
         this.tour.setCapacity(Integer.parseInt(capacity_et.getText().toString()));
         this.tour.settSpecification(specification_et.getText().toString());

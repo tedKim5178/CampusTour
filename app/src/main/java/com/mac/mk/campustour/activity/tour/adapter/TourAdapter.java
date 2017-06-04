@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mac.mk.campustour.R;
@@ -17,6 +18,7 @@ import com.mac.mk.campustour.activity.tourdetail.TourDetailActivity;
 import java.util.ArrayList;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by mk on 2017. 6. 1..
@@ -55,9 +57,10 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
     @Override
     public void onBindViewHolder(TourAdapter.TourItemViewHolder holder, int position) {
 
-        Log.d(TAG, "adapterTest : " + position);
-        holder.tName_tv.setText(tourList.get(position).gettName());
-        holder.tSchool_tv.setText(tourList.get(position).gettSchoolName());
+        Log.d(TAG, "adapterTest : " + position + tourList.get(position).gettName() + " , " + tourList.get(position).gettWriter());
+        holder.tl_title_tv.setText(tourList.get(position).gettName());
+        holder.tl_writerName_tv.setText(tourList.get(position).gettWriter());
+        holder.tl_capacity_tv.setText(String.valueOf(tourList.get(position).getCapacity()));
     }
 
     @Override
@@ -69,15 +72,20 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
     public class TourItemViewHolder
             extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView tName_tv;
-        TextView tSchool_tv;
-        TextView tAddress_tv;
+        ImageView tl_logo_iv;
+        TextView tl_title_tv;
+        TextView tl_writerName_tv;
+        TextView tl_date_tv;
+        TextView tl_capacity_tv;
+
         public TourItemViewHolder(View itemView) {
             super(itemView);
-            tName_tv = (TextView)itemView.findViewById(R.id.tName_tv);
-            tSchool_tv = (TextView)itemView.findViewById(R.id.tSchool_tv);
-            tAddress_tv = (TextView) itemView.findViewById(R.id.tAddress_tv);
-            Log.d(TAG, "onClickTest 생성자: ");
+            tl_logo_iv = (ImageView) itemView.findViewById(R.id.tl_logo_iv);
+            tl_title_tv = (TextView) itemView.findViewById(R.id.tl_title_tv);
+            tl_writerName_tv = (TextView) itemView.findViewById(R.id.tl_writerName_tv);
+            tl_date_tv = (TextView) itemView.findViewById(R.id.tl_date_tv);
+            tl_capacity_tv = (TextView) itemView.findViewById(R.id.tl_capacity_tv);
+
             itemView.setOnClickListener(this);
         }
 

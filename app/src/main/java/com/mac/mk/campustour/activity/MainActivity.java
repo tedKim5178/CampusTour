@@ -144,8 +144,6 @@ public class MainActivity extends AppCompatActivity
                     Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                     startActivity(intent);
                 }
-                Toast.makeText(getApplicationContext(), account.getEmail(),
-                        Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mac.mk.campustour.R;
+import com.mac.mk.campustour.activity.data.User;
 import com.mac.mk.campustour.activity.tour.TourActivity;
 
 import butterknife.Bind;
@@ -42,6 +43,8 @@ public class SettingsActivity extends AppCompatActivity{
     private String key;
     private String email;
     private String name;
+
+    private int flag = 0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,14 +68,13 @@ public class SettingsActivity extends AppCompatActivity{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     // dataSnapshot is the "issue" node with all children with id 0
-                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
-                        // do something with the individual "issues"
-                        Log.d(TAG, "testest" + dataSnapshot.getKey()+" : "+
-                                dataSnapshot.getValue());
-                    }
-                    // 끝나고 엑티비티로 넘긴다
+
+                    User user = dataSnapshot.getValue(User.class);
+                    // user의 type에 따라서 다른 값을 보여준다..!
                     Intent intent = new Intent(getApplicationContext(), TourActivity.class);
                     startActivityForResult(intent, 0);
+                }else{
+                    userTypeSpinner.performClick();
                 }
 
             }
@@ -89,30 +91,36 @@ public class SettingsActivity extends AppCompatActivity{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
 
+                if(flag == 1){
+                    if(position == 0) {
+                        Toast.makeText(getApplicationContext(), "고등학생", Toast.LENGTH_SHORT).show();
+                        editor.putInt("type", HiGHSCHOOL);
+                        editor.commit();
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "대학생", Toast.LENGTH_SHORT).show();
+                        editor.putInt("type", UNIVERSITY);
+                        editor.commit();
+                    }
 
+                    int type = setting.getInt("type", 0);
 
-                if(position == 0) {
-                    Toast.makeText(getApplicationContext(), "고등학생", Toast.LENGTH_SHORT).show();
-                    editor.putInt("type", HiGHSCHOOL);
-                    editor.commit();
+                    // TODO :: 우선 데이터베이스 있는지 없는지 확인 하고 진행해야한다. Query문으로 해당 id값을 검색해보는걸로 될 듯 하다..!
+                    // 값 정상적으로 들어오니까 파이어베이스에 추가
+                    Log.d(TAG, "preferenceTest : " + key + " , " + email + " , " + name + " , " + type);
+                    DatabaseReference mDatabase;
+                    mDatabase = FirebaseDatabase.getInstance().getReference("user/" + key);
+                    mDatabase.child("Email").setValue(email);
+                    mDatabase.child("Name").setValue(name);
+                    mDatabase.child("type").setValue(type);
+
+                    Intent intent = new Intent(getApplicationContext(), TourActivity.class);
+                    startActivityForResult(intent, 0);
                 }
-                else {
-                    Toast.makeText(getApplicationContext(), "대학생", Toast.LENGTH_SHORT).show();
-                    editor.putInt("type", UNIVERSITY);
-                    editor.commit();
+
+                if(flag == 0){
+                    flag = 1;
                 }
-
-
-                int type = setting.getInt("type", 0);
-
-                // TODO :: 우선 데이터베이스 있는지 없는지 확인 하고 진행해야한다. Query문으로 해당 id값을 검색해보는걸로 될 듯 하다..!
-                // 값 정상적으로 들어오니까 파이어베이스에 추가
-                Log.d(TAG, "preferenceTest : " + key + " , " + email + " , " + name + " , " + type);
-                DatabaseReference mDatabase;
-                mDatabase = FirebaseDatabase.getInstance().getReference("user/" + key);
-                mDatabase.child("Email").setValue(email);
-                mDatabase.child("Name").setValue(name);
-                mDatabase.child("type").setValue(type);
 
             }
             @Override
@@ -121,9 +129,5 @@ public class SettingsActivity extends AppCompatActivity{
 
         });
 
-    }
-
-    public void selectClick(View view) {
-        userTypeSpinner.performClick();
     }
 }
