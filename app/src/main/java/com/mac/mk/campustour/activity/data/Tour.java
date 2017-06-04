@@ -30,6 +30,16 @@ public class Tour implements Serializable{
     private String tSpecification;
     // 맛집 리스트
     private ArrayList<Restaurant> restaurants;
+    // 찼는지 안찼는지
+    private boolean occupied = false;
+
+    public boolean isOccupied() {
+        return occupied;
+    }
+
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
+    }
 
     public Tour(){
 

@@ -106,7 +106,7 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
             public void onCompleted(Exception e, String result) {
                 parseJSON(result);
             }
-        });;
+        });
 
 
     }

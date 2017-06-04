@@ -57,6 +57,16 @@ public class MapActivity extends AppCompatActivity implements MapView.POIItemEve
 
     // Objects
     private MapView mapView;
+
+    @Override
+    protected void onDestroy() {
+        // 데이터 반환
+        mapView = null;
+        mapViewContainer.removeView(mapView);
+        mapViewContainer = null;
+        super.onDestroy();
+    }
+
     private RelativeLayout mapViewContainer;
     private HashMap<Integer, Item> mTagItemMap = new HashMap<Integer, Item>();
 
