@@ -1,5 +1,7 @@
 package com.mac.mk.campustour.activity.tour;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -17,8 +20,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mac.mk.campustour.R;
 import com.mac.mk.campustour.activity.data.Tour;
+import com.mac.mk.campustour.activity.data.User;
 import com.mac.mk.campustour.activity.maketour.MakeTourActivity;
 import com.mac.mk.campustour.activity.tour.adapter.TourAdapter;
+import com.mac.mk.campustour.activity.tour.fragment.HighSchoolFragment;
+import com.mac.mk.campustour.activity.tour.fragment.UniversityFragment;
 import com.mac.mk.campustour.activity.tourdetail.TourDetailActivity;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -37,14 +43,10 @@ public class TourActivity extends AppCompatActivity implements TourAdapter.ListI
     private static final String TAG = "TourActivity";
 
     // View Injection
-    @Bind(R.id.tour_recyclerview)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.floating_action_btn)
-    FloatingActionButton mFloatingBtn;
+    @Bind(R.id.fragment_container)
+    FrameLayout fragment_container;
 
     // Objects
-    private TourAdapter tourAdapter;
-    private ArrayList<Tour> tourItemList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,67 +55,24 @@ public class TourActivity extends AppCompatActivity implements TourAdapter.ListI
 
         ButterKnife.bind(this);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(layoutManager);
+        // get user type data from intent
+        Intent intent = getIntent();
+        User user = (User) intent.getSerializableExtra("user");
+        int type = user.getType();
 
-        tourItemList = new ArrayList();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        if(type == 0){
+            fragmentTransaction.add(R.id.fragment_container, new HighSchoolFragment());
+        }else{
+            fragmentTransaction.add(R.id.fragment_container, new UniversityFragment());
+        }
+        fragmentTransaction.commit();
 
-        // TODO:: 뿌려줄 리스트는 파이어베이스에서 플랜정보이다.
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("tour");
-        ref.addChildEventListener(new ChildEventListener() {
-
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                Tour tour = dataSnapshot.getValue(Tour.class);
-                tourItemList.add(tour);
-                Log.d(TAG, "hello : " + tour.gettName()  + " , " + tour.gettSchoolName() + tourItemList.size());
-                Log.d(TAG, "hello : " + tour.getRestaurants().get(0).getAddress());
-                tourAdapter.setTourItemList(tourItemList);
-                tourAdapter.notifyDataSetChanged();
-                
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) { }
-        });
-
-        tourAdapter = new TourAdapter(tourItemList, getApplicationContext(), this);
-        mRecyclerView.setAdapter(tourAdapter);
-
-        mFloatingBtn.attachToRecyclerView(mRecyclerView);
-
-        // 이벤트 적용
-        mFloatingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MakeTourActivity.class);
-                startActivityForResult(intent, 0);
-            }
-        });
     }
 
     @Override
     public void onListItemClick(Tour tour) {
-        Intent intent = new Intent(getApplicationContext(), TourDetailActivity.class);
-        intent.putExtra("tour", tour);
-        startActivity(intent);
+        // TODO:: 옵저버 패턴 공부.!
     }
 }

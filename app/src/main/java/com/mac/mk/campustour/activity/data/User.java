@@ -1,13 +1,21 @@
 package com.mac.mk.campustour.activity.data;
 
+import java.io.Serializable;
+
 /**
  * Created by mk on 2017. 6. 2..
  */
 
-public class User {
+public class User implements Serializable{
 
     public User(){
 
+    }
+
+    public User(String email, String name, int type){
+        this.Email = email;
+        this.Name = name;
+        this.type = type;
     }
     // 이메일
     private String Email;

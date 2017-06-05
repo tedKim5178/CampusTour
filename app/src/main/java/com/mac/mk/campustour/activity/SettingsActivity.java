@@ -72,6 +72,7 @@ public class SettingsActivity extends AppCompatActivity{
                     User user = dataSnapshot.getValue(User.class);
                     // user의 type에 따라서 다른 값을 보여준다..!
                     Intent intent = new Intent(getApplicationContext(), TourActivity.class);
+                    intent.putExtra("user", user);
                     startActivityForResult(intent, 0);
                 }else{
                     userTypeSpinner.performClick();
@@ -103,18 +104,22 @@ public class SettingsActivity extends AppCompatActivity{
                         editor.commit();
                     }
 
+
                     int type = setting.getInt("type", 0);
+                    Log.d(TAG, "타입테스트 : " + type);
 
                     // TODO :: 우선 데이터베이스 있는지 없는지 확인 하고 진행해야한다. Query문으로 해당 id값을 검색해보는걸로 될 듯 하다..!
                     // 값 정상적으로 들어오니까 파이어베이스에 추가
-                    Log.d(TAG, "preferenceTest : " + key + " , " + email + " , " + name + " , " + type);
                     DatabaseReference mDatabase;
                     mDatabase = FirebaseDatabase.getInstance().getReference("user/" + key);
-                    mDatabase.child("Email").setValue(email);
-                    mDatabase.child("Name").setValue(name);
-                    mDatabase.child("type").setValue(type);
+//                    mDatabase.child("Email").setValue(email);
+//                    mDatabase.child("Name").setValue(name);
+//                    mDatabase.child("type").setValue(type);
+                    User user = new User(email, name, type);
+                    mDatabase.setValue(user);
 
                     Intent intent = new Intent(getApplicationContext(), TourActivity.class);
+                    intent.putExtra("user", user);
                     startActivityForResult(intent, 0);
                 }
 
