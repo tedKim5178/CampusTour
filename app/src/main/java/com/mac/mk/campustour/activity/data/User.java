@@ -13,31 +13,31 @@ public class User implements Serializable{
     }
 
     public User(String email, String name, int type){
-        this.Email = email;
-        this.Name = name;
+        this.email = email;
+        this.name = name;
         this.type = type;
     }
     // 이메일
-    private String Email;
+    private String email;
     // 이름
-    private String Name;
+    private String name;
     // 고등학생 or 대학생
     private int type;
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public int getType() {

@@ -20,6 +20,7 @@ import com.mac.mk.campustour.R;
 import com.mac.mk.campustour.activity.data.Tour;
 import com.mac.mk.campustour.activity.maketour.MakeTourActivity;
 import com.mac.mk.campustour.activity.tour.adapter.TourAdapter;
+import com.mac.mk.campustour.activity.tourdetail.TourDetailActivity;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -118,7 +119,9 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
 
     @Override
     public void onListItemClick(Tour tour) {
-        Log.d(TAG, "프레그먼트테스트 onListItemClick in HighSchoolFragment");
-
+        Log.d(TAG, "프레그먼트테스트 onListItemClick in UniversityFragment");
+        Intent intent = new Intent(getActivity().getApplicationContext(), TourDetailActivity.class);
+        intent.putExtra("tour", tour);
+        startActivity(intent);
     }
 }

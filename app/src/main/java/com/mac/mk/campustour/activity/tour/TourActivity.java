@@ -60,6 +60,7 @@ public class TourActivity extends AppCompatActivity implements TourAdapter.ListI
         User user = (User) intent.getSerializableExtra("user");
         int type = user.getType();
 
+        Log.d(TAG, "타입테스트 in TourActivity " + type);
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         if(type == 0){

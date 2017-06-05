@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.mac.mk.campustour.R;
 import com.mac.mk.campustour.activity.data.Tour;
 import com.mac.mk.campustour.activity.tourdetail.TourDetailActivity;
@@ -61,6 +63,7 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
         holder.tl_title_tv.setText(tourList.get(position).gettName());
         holder.tl_writerName_tv.setText(tourList.get(position).gettWriter());
         holder.tl_capacity_tv.setText(String.valueOf(tourList.get(position).getCapacity()));
+        YoYo.with(Techniques.FadeOutUp).duration(10000).playOn(holder.tl_capacity_tv);
     }
 
     @Override

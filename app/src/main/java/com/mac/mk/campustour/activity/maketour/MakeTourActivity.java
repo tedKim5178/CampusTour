@@ -153,6 +153,7 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
                 SettingTourInformation();
                 // 데이터베이스에 저장
                 FirebaseUtils.registerTourInfoToDatabase(this.tour);
+                finish();
                 break;
             }
         }

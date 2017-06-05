@@ -68,12 +68,15 @@ public class SettingsActivity extends AppCompatActivity{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     // dataSnapshot is the "issue" node with all children with id 0
-
-                    User user = dataSnapshot.getValue(User.class);
-                    // user의 type에 따라서 다른 값을 보여준다..!
-                    Intent intent = new Intent(getApplicationContext(), TourActivity.class);
-                    intent.putExtra("user", user);
-                    startActivityForResult(intent, 0);
+                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                        // do something with the individual "issues"
+                        User user = issue.getValue(User.class);
+                        // user의 type에 따라서 다른 값을 보여준다..!
+                        Log.d(TAG, "타입테스트 : " + user.getType() + user.getEmail());
+                        Intent intent = new Intent(getApplicationContext(), TourActivity.class);
+                        intent.putExtra("user", user);
+                        startActivityForResult(intent, 0);
+                    }
                 }else{
                     userTypeSpinner.performClick();
                 }
