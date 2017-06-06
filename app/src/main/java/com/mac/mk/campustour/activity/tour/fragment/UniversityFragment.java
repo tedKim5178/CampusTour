@@ -4,12 +4,22 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -43,9 +53,11 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
     @Bind(R.id.floating_action_btn)
     FloatingActionButton mFloatingBtn;
 
+
     // Objects
     private TourAdapter tourAdapter;
     private ArrayList<Tour> tourItemList;
+
 
     @Nullable
     @Override
@@ -124,4 +136,6 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
         intent.putExtra("tour", tour);
         startActivity(intent);
     }
+
+
 }

@@ -1,9 +1,11 @@
 package com.mac.mk.campustour.activity.maketour;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +73,8 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
     EditText capacity_et;
     @Bind(R.id.specification_et)
     EditText specification_et;
+    @Bind(R.id.contact_et)
+    EditText contact_et;
 
     @Bind(R.id.restaurant_et)
     EditText restaurant_et;
@@ -84,10 +88,13 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
     // Objects
     Tour tour = null;
     private HashMap<Integer, Item> mTagItemMap = new HashMap<Integer, Item>();
-    ArrayList<Restaurant> restaurantArrayList = null;
+    private ArrayList<Restaurant> restaurantArrayList = null;
 
-    HashMap<String, String> hm = null;
-    ArrayList<String> schools = null;
+    private SharedPreferences setting = null;
+    private HashMap<String, String> hm = null;
+    private ArrayList<String> schools = null;
+    private String writer = null;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +145,15 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
         restaurantArrayList = new ArrayList<>();
         hm = new HashMap<>();
         schools = new ArrayList<>();
+
+        // - (하이픈) 자동으로
+        contact_et.setInputType(android.text.InputType.TYPE_CLASS_PHONE);
+        contact_et.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
+        setting = getSharedPreferences("setting", 0);
+        writer = setting.getString("name", null);
+        // set User Name
+        writer_et.setText(writer);
     }
 
     @OnClick({R.id.restaurant_add_btn, R.id.register_tour_btn})
@@ -162,11 +178,11 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
     public void SettingTourInformation(){
 
         this.tour.settName(name_et.getText().toString());
-        this.tour.settWriter(writer_et.getText().toString());
         this.tour.settSchoolName(sName_auto_et.getText().toString());
         this.tour.setCapacity(Integer.parseInt(capacity_et.getText().toString()));
         this.tour.settSpecification(specification_et.getText().toString());
         this.tour.setRestaurants(restaurantArrayList);
+        this.tour.settContact(contact_et.getText().toString());
 
         // name 이용해서 tour의 key값 넣기
         String key = (String) getKeyFromValue(sName_auto_et.getText().toString());

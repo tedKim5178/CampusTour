@@ -112,4 +112,6 @@ public class HighSchoolFragment extends Fragment implements TourAdapter.ListItem
         intent.putExtra("tour", tour);
         startActivity(intent);
     }
+
+
 }

@@ -15,6 +15,24 @@ public class Tour implements Serializable{
     private String tName;
     // 학교 이름
     private String tSchoolName;
+    // 학교 Key
+    private String tKey;
+    // 상세 내용
+    private String tSpecification;
+    // 맛집 리스트
+    private ArrayList<Restaurant> restaurants;
+    // 연락처
+    private String tContact;
+    // 찼는지 안찼는지
+    private boolean occupied = false;
+
+    public String gettContact() {
+        return tContact;
+    }
+
+    public void settContact(String tContact) {
+        this.tContact = tContact;
+    }
 
     public String gettKey() {
         return tKey;
@@ -23,15 +41,6 @@ public class Tour implements Serializable{
     public void settKey(String tKey) {
         this.tKey = tKey;
     }
-
-    // 학교 Key
-    private String tKey;
-    // 상세 내용
-    private String tSpecification;
-    // 맛집 리스트
-    private ArrayList<Restaurant> restaurants;
-    // 찼는지 안찼는지
-    private boolean occupied = false;
 
     public boolean isOccupied() {
         return occupied;
