@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -84,6 +85,8 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
     Button register_tour_btn;
     @Bind(R.id.restaurant_add_layout)
     LinearLayout restaurant_add_layout;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     // Objects
     Tour tour = null;
@@ -94,6 +97,8 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
     private HashMap<String, String> hm = null;
     private ArrayList<String> schools = null;
     private String writer = null;
+    private String writerId = null;
+    private String writerEmail = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -152,8 +157,14 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
 
         setting = getSharedPreferences("setting", 0);
         writer = setting.getString("name", null);
+        writerId = setting.getString("key", null);
+        writerEmail = setting.getString("email", null);
         // set User Name
         writer_et.setText(writer);
+
+        // set toolbar
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("CampusTour");
     }
 
     @OnClick({R.id.restaurant_add_btn, R.id.register_tour_btn})
@@ -183,6 +194,9 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
         this.tour.settSpecification(specification_et.getText().toString());
         this.tour.setRestaurants(restaurantArrayList);
         this.tour.settContact(contact_et.getText().toString());
+        this.tour.settWriterId(writerId);
+        this.tour.settWrtierEmail(writerEmail);
+        this.tour.settWriter(writer);
 
         // name 이용해서 tour의 key값 넣기
         String key = (String) getKeyFromValue(sName_auto_et.getText().toString());

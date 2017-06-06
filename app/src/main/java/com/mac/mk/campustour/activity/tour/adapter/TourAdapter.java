@@ -17,6 +17,8 @@ import com.mac.mk.campustour.R;
 import com.mac.mk.campustour.activity.data.Tour;
 import com.mac.mk.campustour.activity.tourdetail.TourDetailActivity;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -63,6 +65,12 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
         holder.tl_title_tv.setText(tourList.get(position).gettName());
         holder.tl_writerName_tv.setText(tourList.get(position).gettWriter());
         holder.tl_capacity_tv.setText(String.valueOf(tourList.get(position).getCapacity()));
+        if(tourList.get(position).isOccupied()){
+            // 참이면 마감
+            holder.tl_occupied_tv.setText("마감");
+        }else{
+            holder.tl_occupied_tv.setText("모집중");
+        }
         YoYo.with(Techniques.FadeOutUp).duration(10000).playOn(holder.tl_capacity_tv);
     }
 
@@ -80,6 +88,7 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
         TextView tl_writerName_tv;
         TextView tl_date_tv;
         TextView tl_capacity_tv;
+        TextView tl_occupied_tv;
 
         public TourItemViewHolder(View itemView) {
             super(itemView);
@@ -88,6 +97,7 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
             tl_writerName_tv = (TextView) itemView.findViewById(R.id.tl_writerName_tv);
             tl_date_tv = (TextView) itemView.findViewById(R.id.tl_date_tv);
             tl_capacity_tv = (TextView) itemView.findViewById(R.id.tl_capacity_tv);
+            tl_occupied_tv = (TextView) itemView.findViewById(R.id.tl_occupied_tv);
 
             itemView.setOnClickListener(this);
         }

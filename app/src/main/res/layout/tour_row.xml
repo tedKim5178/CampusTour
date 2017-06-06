@@ -30,12 +30,13 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:layout_weight="1"
+                    android:id="@+id/tl_occupied_tv"
                     android:text="모집중"
                     android:background="#f38300"
                     android:textColor="#000000"
                     android:layout_gravity="right"
                     android:gravity="center"
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

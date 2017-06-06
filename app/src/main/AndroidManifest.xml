@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".activity.mytour.MyTourActivity"/>
         <activity android:name=".activity.tourdetail.TourDetailActivity"/>
         <activity android:name=".activity.map.MapActivity"/>
         <activity android:name=".activity.maketour.MakeTourActivity"/>

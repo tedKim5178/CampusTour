@@ -37,6 +37,7 @@ import com.mac.mk.campustour.R;
 import com.mac.mk.campustour.activity.data.Tour;
 import com.mac.mk.campustour.activity.data.User;
 import com.mac.mk.campustour.activity.maketour.MakeTourActivity;
+import com.mac.mk.campustour.activity.mytour.MyTourActivity;
 import com.mac.mk.campustour.activity.tour.adapter.TourAdapter;
 import com.mac.mk.campustour.activity.tour.fragment.HighSchoolFragment;
 import com.mac.mk.campustour.activity.tour.fragment.UniversityFragment;
@@ -117,6 +118,8 @@ public class TourActivity extends AppCompatActivity implements TourAdapter.ListI
 
         if (id == R.id.nav_mytour) {
             Toast.makeText(this, "mytour", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, MyTourActivity.class);
+            startActivity(intent);
         }else if(id == R.id.nav_logout){
             Toast.makeText(this, "logout", Toast.LENGTH_SHORT).show();
         }
@@ -124,28 +127,6 @@ public class TourActivity extends AppCompatActivity implements TourAdapter.ListI
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.options, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

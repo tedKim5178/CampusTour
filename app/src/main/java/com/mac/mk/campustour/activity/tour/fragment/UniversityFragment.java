@@ -34,6 +34,7 @@ import com.mac.mk.campustour.activity.tourdetail.TourDetailActivity;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,7 +58,7 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
     // Objects
     private TourAdapter tourAdapter;
     private ArrayList<Tour> tourItemList;
-
+    private HashMap<String, Tour> hm;
 
     @Nullable
     @Override
@@ -74,6 +75,7 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
         super.onActivityCreated(savedInstanceState);
 
         tourItemList = new ArrayList<>();
+        hm = new HashMap<>();
 
         // recyclerview
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -89,6 +91,7 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                 Tour tour = dataSnapshot.getValue(Tour.class);
+                hm.put(dataSnapshot.getKey(), tour);
                 tourItemList.add(tour);
                 tourAdapter.setTourItemList(tourItemList);
                 tourAdapter.notifyDataSetChanged();
@@ -96,7 +99,12 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                Log.d(TAG, "바보바보바보! " + dataSnapshot.getKey());
+                Tour tour = hm.get(dataSnapshot.getKey());
+                int index = tourItemList.indexOf(tour);
+                tourItemList.get(index).setOccupied((boolean)dataSnapshot.child("occupied").getValue());
+                tourAdapter.setTourItemList(tourItemList);
+                tourAdapter.notifyDataSetChanged();
             }
 
             @Override

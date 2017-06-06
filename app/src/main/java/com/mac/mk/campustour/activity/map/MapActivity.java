@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,8 @@ import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPointBounds;
 import net.daum.mf.map.api.MapView;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +57,10 @@ public class MapActivity extends AppCompatActivity implements MapView.POIItemEve
     TextView restaurant_address_tv;
     @Bind(R.id.select_map_btn)
     Button select_map_btn;
-
+    @Bind(R.id.restaurant_tel_tv)
+    TextView restaurant_tel_tv;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     // Objects
     private MapView mapView;
 
@@ -75,6 +81,7 @@ public class MapActivity extends AppCompatActivity implements MapView.POIItemEve
     private double longitude;
     private String title;
     private String address;
+    private String tel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,7 +89,13 @@ public class MapActivity extends AppCompatActivity implements MapView.POIItemEve
         setContentView(R.layout.activity_map);
 
         ButterKnife.bind(this);
+        init();
         mapReady();
+    }
+
+    public void init(){
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("CampusTour");
     }
 
     public void mapReady(){
@@ -114,6 +127,7 @@ public class MapActivity extends AppCompatActivity implements MapView.POIItemEve
     }
 
     public void showMaps(){
+
         String query = restaurant_query_et.getText().toString();
         if (query == null || query.length() == 0) {
             Toast.makeText(getApplicationContext(), "검색어를 입력하세요. ", Toast.LENGTH_SHORT);
@@ -202,10 +216,12 @@ public class MapActivity extends AppCompatActivity implements MapView.POIItemEve
         //Setting textView information
         title = itemFromTag.title;
         address = itemFromTag.address;
-
+        tel = itemFromTag.phone;
         // set textViews
         restaurant_title_tv.setText(title);
         restaurant_address_tv.setText(address);
+        restaurant_tel_tv.setText(tel);
+
     }
 
     @Override

@@ -11,6 +11,10 @@ public class Tour implements Serializable{
 
     // 작성자
     private String tWriter;
+    // 작성자 getId
+    private String tWriterId;
+    // 작성자 email
+    private String tWriterEmail;
     // 투어 제목
     private String tName;
     // 학교 이름
@@ -25,6 +29,22 @@ public class Tour implements Serializable{
     private String tContact;
     // 찼는지 안찼는지
     private boolean occupied = false;
+
+    public String gettWrtierEmail() {
+        return tWriterEmail;
+    }
+
+    public void settWrtierEmail(String tWrtierEmail) {
+        this.tWriterEmail = tWrtierEmail;
+    }
+
+    public String gettWriterId() {
+        return tWriterId;
+    }
+
+    public void settWriterId(String tWriterId) {
+        this.tWriterId = tWriterId;
+    }
 
     public String gettContact() {
         return tContact;

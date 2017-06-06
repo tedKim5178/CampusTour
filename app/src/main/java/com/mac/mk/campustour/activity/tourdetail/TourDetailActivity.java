@@ -1,13 +1,25 @@
 package com.mac.mk.campustour.activity.tourdetail;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -55,12 +67,22 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
     TextView show_sWebsite_tv;
     @Bind(R.id.show_tour_detail_tv)
     TextView show_tour_detail_tv;
+    @Bind(R.id.show_writer_name_tv)
+    TextView show_writer_name_tv;
+    @Bind(R.id.show_writer_contact_tv)
+    TextView show_writer_contact_tv;
+    @Bind(R.id.show_writer_email_tv)
+    TextView show_writer_email_tv;
+    @Bind(R.id.tour_detail_layout)
+    LinearLayout tour_detail_layout;
 
     // Objects
     Tour tour;
     School[] schools = null;
     MapView mapView = null;
     private RelativeLayout mapViewContainer;
+    private SharedPreferences setting = null;
+    private String tourKey = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,10 +101,11 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
 
         // Get Tour data through intent
         Intent intent = getIntent();
+        tourKey = intent.getStringExtra("key");
         tour = (Tour) intent.getSerializableExtra("tour");
 
         // Extract key data to get school information from the Internet using JSON
-        String key = tour.gettKey();
+        final String key = tour.gettKey();
         Ion.with(this).load(OpenApiConst.BASE_URL + OpenApiConst.OPEN_API_KEY + OpenApiConst.TYPE
                 + OpenApiConst.SERVICE + OpenApiConst.MIN + OpenApiConst.MIN + "/" + key).asString().setCallback(new FutureCallback<String>() {
             @Override
@@ -92,7 +115,31 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
             }
         });
 
+        // get UserId
+        setting = getSharedPreferences("setting", 0);
+        String userId = setting.getString("key", null);
 
+        // 만약 내가 생성한 투어라면 현재 레이아웃에 버튼을 하나 더 생성해준다
+        if(tour.gettWriterId().equals(userId)){
+            Button button = new Button(this);
+            LinearLayout.LayoutParams ll= new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            button.setText("투어 모집 마감");
+            button.setTextColor(Color.argb(255,255,255,255));
+            button.setTextSize(20);
+            button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            button.setLayoutParams(ll);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "??", Toast.LENGTH_SHORT).show();
+                    // 파이어베이스 접근해서 tour정보를 마감으로 바꿔줘야함..!
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference occupiedRef = database.getReference("tour").child(tourKey).child("occupied");
+                    occupiedRef.setValue(true);
+                }
+            });
+            tour_detail_layout.addView(button);
+        }
     }
     public void showTourDataView(){
         show_sName_tv.setText(schools[0].getNAME_KOR());
@@ -103,6 +150,11 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
 
         // tour detail
         show_tour_detail_tv.setText(tour.gettSpecification());
+
+        // writer detail
+        show_writer_name_tv.setText(tour.gettWriter());
+        show_writer_contact_tv.setText(tour.gettContact());
+        show_writer_email_tv.setText(tour.gettWrtierEmail());
 
         // map information
 
