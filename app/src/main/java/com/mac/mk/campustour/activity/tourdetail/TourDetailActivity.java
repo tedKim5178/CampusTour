@@ -3,23 +3,30 @@ package com.mac.mk.campustour.activity.tourdetail;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -27,7 +34,9 @@ import com.mac.mk.campustour.R;
 import com.mac.mk.campustour.activity.api.MapApiConst;
 import com.mac.mk.campustour.activity.api.OpenApiConst;
 import com.mac.mk.campustour.activity.data.School;
+import com.mac.mk.campustour.activity.data.SchoolNameEngKor;
 import com.mac.mk.campustour.activity.data.Tour;
+import com.squareup.picasso.Picasso;
 
 
 import net.daum.android.map.coord.MapCoord;
@@ -55,6 +64,8 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
     private static final String TAG = "TourDetailActivity";
 
     // View Injection
+    @Bind(R.id.sLogo_iv)
+    ImageView sLogo_iv;
     @Bind(R.id.show_sName_tv)
     TextView show_sName_tv;
     @Bind(R.id.show_sAddress_tv)
@@ -102,6 +113,7 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
         // Get Tour data through intent
         Intent intent = getIntent();
         tourKey = intent.getStringExtra("key");
+        Log.d(TAG, "투어키 " + tourKey);
         tour = (Tour) intent.getSerializableExtra("tour");
 
         // Extract key data to get school information from the Internet using JSON
@@ -156,7 +168,27 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
         show_writer_contact_tv.setText(tour.gettContact());
         show_writer_email_tv.setText(tour.gettWrtierEmail());
 
-        // map information
+        // universito logo
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://firebase-campustour.appspot.com");
+        String path = SchoolNameEngKor.schoolNameEngKor.get(tour.gettSchoolName()) + ".png";
+        StorageReference imageRef = storageRef.child(path);
+
+        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>(){
+
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.d(TAG, "바보바보 성공 " + uri);
+                Picasso.with(getApplicationContext()).load(uri).into(sLogo_iv);
+            }
+
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "바보바보 !  " + e.getMessage());
+            }
+        });
 
     }
 

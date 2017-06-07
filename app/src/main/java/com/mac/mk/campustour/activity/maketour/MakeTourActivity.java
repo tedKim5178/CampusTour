@@ -2,7 +2,9 @@ package com.mac.mk.campustour.activity.maketour;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +21,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -165,6 +171,7 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
         // set toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("CampusTour");
+
     }
 
     @OnClick({R.id.restaurant_add_btn, R.id.register_tour_btn})

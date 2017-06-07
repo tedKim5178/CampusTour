@@ -142,8 +142,19 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
         Log.d(TAG, "프레그먼트테스트 onListItemClick in UniversityFragment");
         Intent intent = new Intent(getActivity().getApplicationContext(), TourDetailActivity.class);
         intent.putExtra("tour", tour);
+        String key = (String) getKeyFromValue(tour);
+        Log.d(TAG, "바보바보 " + key);
+        intent.putExtra("key", key);
         startActivity(intent);
     }
 
+    public  Object getKeyFromValue(Object value) {
+        for (Object o : hm.keySet()) {
+            if (hm.get(o).equals(value)) {
+                return o;
+            }
+        }
+        return null;
+    }
 
 }

@@ -3,6 +3,8 @@ package com.mac.mk.campustour.activity.tour.adapter;
 import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,9 +15,15 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.mac.mk.campustour.R;
+import com.mac.mk.campustour.activity.data.SchoolNameEngKor;
 import com.mac.mk.campustour.activity.data.Tour;
 import com.mac.mk.campustour.activity.tourdetail.TourDetailActivity;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -33,22 +41,36 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
     // Tag for comments
     private static final String TAG = "TourAdapter";
 
+    // listener interface
+    final private ListItemClickListener mOnClickListener;
+
     // Objects
     private ArrayList<Tour> tourList;
     private Context mContext;
-    final private ListItemClickListener mOnClickListener;
+
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private StorageReference imageRef;
 
     // define Interface to click listener
     public interface ListItemClickListener{
         void onListItemClick(Tour tour);
     }
 
+
     public TourAdapter(ArrayList tourList, Context context, ListItemClickListener listener){
         this.tourList = tourList;
         this.mContext = context;
         this.mOnClickListener = listener;
+
+        init();
     }
 
+    public void init(){
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReferenceFromUrl("gs://firebase-campustour.appspot.com");
+
+    }
     @Override
     public TourAdapter.TourItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).
@@ -59,9 +81,26 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
     }
 
     @Override
-    public void onBindViewHolder(TourAdapter.TourItemViewHolder holder, int position) {
+    public void onBindViewHolder(final TourAdapter.TourItemViewHolder holder, int position) {
 
         Log.d(TAG, "adapterTest : " + position + tourList.get(position).gettName() + " , " + tourList.get(position).gettWriter());
+
+        String path = SchoolNameEngKor.schoolNameEngKor.get(tourList.get(position).gettSchoolName()) + ".png";
+        imageRef = storageRef.child(path);
+        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>(){
+
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.with(mContext).load(uri).into(holder.tl_logo_iv);
+            }
+
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
+
         holder.tl_title_tv.setText(tourList.get(position).gettName());
         holder.tl_writerName_tv.setText(tourList.get(position).gettWriter());
         holder.tl_capacity_tv.setText(String.valueOf(tourList.get(position).getCapacity()));
@@ -71,7 +110,6 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
         }else{
             holder.tl_occupied_tv.setText("모집중");
         }
-        YoYo.with(Techniques.FadeOutUp).duration(10000).playOn(holder.tl_capacity_tv);
     }
 
     @Override

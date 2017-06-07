@@ -21,6 +21,7 @@
 
         <ImageView
             android:id="@+id/sLogo_iv"
+            android:scaleType="fitCenter"
             android:layout_weight="3"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
