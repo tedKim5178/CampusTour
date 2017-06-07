@@ -27,14 +27,24 @@ public class Tour implements Serializable{
     private ArrayList<Restaurant> restaurants;
     // 연락처
     private String tContact;
+    // 날짜
+    private String tDate;
     // 찼는지 안찼는지
     private boolean occupied = false;
 
-    public String gettWrtierEmail() {
+    public String gettDate() {
+        return tDate;
+    }
+
+    public void settDate(String tDate) {
+        this.tDate = tDate;
+    }
+
+    public String gettWriterEmail() {
         return tWriterEmail;
     }
 
-    public void settWrtierEmail(String tWrtierEmail) {
+    public void settWriterEmail(String tWrtierEmail) {
         this.tWriterEmail = tWrtierEmail;
     }
 

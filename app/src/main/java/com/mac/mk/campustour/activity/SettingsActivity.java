@@ -6,6 +6,7 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,8 +32,12 @@ import butterknife.ButterKnife;
 
 public class SettingsActivity extends AppCompatActivity{
 
+    // View Injection
     @Bind(R.id.userTypeSpinner)
     Spinner userTypeSpinner;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+
     private static final int HiGHSCHOOL = 0;
     private static final int UNIVERSITY = 1;
     private static final String TAG = "SettingsActivity";
@@ -52,6 +57,10 @@ public class SettingsActivity extends AppCompatActivity{
 
         ButterKnife.bind(this);
 
+        // set toolbar
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("CampusTour");
+        
         // Preference 에서 데이터 불러오자
         setting = getSharedPreferences("setting", 0);
         editor = setting.edit();

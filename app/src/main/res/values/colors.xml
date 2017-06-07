@@ -9,5 +9,8 @@
     <color name="fabPressed">#6EB5F7</color>
     <color name="fabRipple">#AED6FC</color>
 
+    <color name="mdtp_accent_color">#1B97F3</color>
+    <color name="mdtp_accent_color_dark">#303F9F</color>
+
 </resources>
 

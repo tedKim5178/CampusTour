@@ -60,6 +60,7 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
     private ArrayList<Tour> tourItemList;
     private HashMap<String, Tour> hm;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

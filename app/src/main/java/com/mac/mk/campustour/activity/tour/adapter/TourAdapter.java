@@ -103,7 +103,9 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
 
         holder.tl_title_tv.setText(tourList.get(position).gettName());
         holder.tl_writerName_tv.setText(tourList.get(position).gettWriter());
+        holder.tl_date_tv.setText(tourList.get(position).gettDate());
         holder.tl_capacity_tv.setText(String.valueOf(tourList.get(position).getCapacity()));
+        holder.tl_uName_tv.setText(tourList.get(position).gettSchoolName());
         if(tourList.get(position).isOccupied()){
             // 참이면 마감
             holder.tl_occupied_tv.setText("마감");
@@ -127,6 +129,7 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
         TextView tl_date_tv;
         TextView tl_capacity_tv;
         TextView tl_occupied_tv;
+        TextView tl_uName_tv;
 
         public TourItemViewHolder(View itemView) {
             super(itemView);
@@ -136,6 +139,7 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
             tl_date_tv = (TextView) itemView.findViewById(R.id.tl_date_tv);
             tl_capacity_tv = (TextView) itemView.findViewById(R.id.tl_capacity_tv);
             tl_occupied_tv = (TextView) itemView.findViewById(R.id.tl_occupied_tv);
+            tl_uName_tv = (TextView) itemView.findViewById(R.id.tl_uName_tv);
 
             itemView.setOnClickListener(this);
         }

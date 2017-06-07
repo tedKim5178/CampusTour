@@ -1,7 +1,9 @@
 package com.mac.mk.campustour.activity.maketour;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,7 +11,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -19,6 +23,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,6 +44,7 @@ import com.mac.mk.campustour.activity.map.MapActivity;
 import com.mac.mk.campustour.activity.search.Item;
 import com.mac.mk.campustour.activity.search.OnFinishSearchListener;
 import com.mac.mk.campustour.activity.search.Searcher;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import net.daum.mf.map.api.CameraUpdateFactory;
 import net.daum.mf.map.api.MapPOIItem;
@@ -49,8 +55,10 @@ import net.daum.mf.map.api.MapView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,7 +70,8 @@ import butterknife.OnClick;
  * Created by mk on 2017. 6. 1..
  */
 
-public class MakeTourActivity extends AppCompatActivity implements MapView.POIItemEventListener{
+public class MakeTourActivity extends AppCompatActivity implements MapView.POIItemEventListener,
+        com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
 
     // Tag for Comment
     private final static String TAG = "MakeTourActivity";
@@ -84,7 +93,7 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
     EditText contact_et;
 
     @Bind(R.id.restaurant_et)
-    EditText restaurant_et;
+    TextView restaurant_et;
     @Bind(R.id.restaurant_add_btn)
     Button restaurant_add_btn;
     @Bind(R.id.register_tour_btn)
@@ -93,6 +102,10 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
     LinearLayout restaurant_add_layout;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+    @Bind(R.id.select_date_btn)
+    Button select_date_btn;
+    @Bind(R.id.add_date_ll)
+    LinearLayout add_date_ll;
 
     // Objects
     Tour tour = null;
@@ -105,7 +118,7 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
     private String writer = null;
     private String writerId = null;
     private String writerEmail = null;
-
+    private String date = null;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,7 +187,7 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
 
     }
 
-    @OnClick({R.id.restaurant_add_btn, R.id.register_tour_btn})
+    @OnClick({R.id.restaurant_add_btn, R.id.register_tour_btn, R.id.select_date_btn})
     public void onClick(View view){
         int id = view.getId();
         switch (id){
@@ -190,6 +203,21 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
                 finish();
                 break;
             }
+            case R.id.select_date_btn:{
+                Calendar now = Calendar.getInstance();
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        this,
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH)
+                );
+                dpd.setAccentColor(getResources().getColor(R.color.mdtp_accent_color));
+                dpd.setCancelColor(getResources().getColor(R.color.mdtp_accent_color));
+                dpd.setOkColor(getResources().getColor(R.color.mdtp_accent_color));
+                dpd.show(getFragmentManager(), "Datepickerdialog");
+
+                break;
+            }
         }
     }
 
@@ -202,9 +230,9 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
         this.tour.setRestaurants(restaurantArrayList);
         this.tour.settContact(contact_et.getText().toString());
         this.tour.settWriterId(writerId);
-        this.tour.settWrtierEmail(writerEmail);
+        this.tour.settWriterEmail(writerEmail);
         this.tour.settWriter(writer);
-
+        this.tour.settDate(date);
         // name 이용해서 tour의 key값 넣기
         String key = (String) getKeyFromValue(sName_auto_et.getText().toString());
         this.tour.settKey(key);
@@ -237,11 +265,19 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
                 TextView textView = new TextView(this);
                 final Button button = new Button(this);
                 LinearLayout.LayoutParams textViewLP = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
-                textViewLP.weight = 3;
-                LinearLayout.LayoutParams buttonLP = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
-                buttonLP.weight = 1;
+
+                DisplayMetrics dm = getResources().getDisplayMetrics();
+                int removeBtnSize = Math.round(35 * dm.density);
+                int tvPaddingSize = Math.round(6 * dm.density);
+
+                textViewLP.weight = 1;
+                textView.setTextSize(16);
+                textView.setTextColor(Color.BLACK);
+                LinearLayout.LayoutParams buttonLP = new LinearLayout.LayoutParams(removeBtnSize, removeBtnSize);
                 textView.setLayoutParams(textViewLP);
+                textView.setPadding(tvPaddingSize, 0,0,0);
                 button.setLayoutParams(buttonLP);
+                button.setBackgroundResource(R.drawable.ic_remove);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -293,5 +329,64 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
             }
         }
         return null;
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        date = year+"년 "+(monthOfYear+1)+"월 "+dayOfMonth + "일";
+        Toast.makeText(this, date + " 선택!", Toast.LENGTH_SHORT).show();
+
+        // 동적으로 날짜 정보 추가해주기
+        LinearLayout.LayoutParams layoutLP = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        linearLayout.setLayoutParams(layoutLP);
+
+        TextView year_tv = new TextView(this);
+        TextView month_tv = new TextView(this);
+        TextView day_tv = new TextView(this);
+
+        LinearLayout.LayoutParams yearLP = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams monthLP = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams dayLP = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+        yearLP.weight = 1;
+        monthLP.weight = 1;
+        dayLP.weight = 1;
+
+        year_tv.setText(String.valueOf(year) + "년");
+        month_tv.setText(String.valueOf(monthOfYear+1) + "월");
+        day_tv.setText(String.valueOf(dayOfMonth) + "일");
+
+        year_tv.setTextColor(Color.BLACK);
+        month_tv.setTextColor(Color.BLACK);
+        day_tv.setTextColor(Color.BLACK);
+
+        year_tv.setTextSize(18);
+        month_tv.setTextSize(18);
+        day_tv.setTextSize(18);
+
+        year_tv.setGravity(Gravity.RIGHT);
+        month_tv.setGravity(Gravity.RIGHT);
+        day_tv.setGravity(Gravity.RIGHT);
+
+        year_tv.setLayoutParams(yearLP);
+        month_tv.setLayoutParams(monthLP);
+        day_tv.setLayoutParams(dayLP);
+
+        linearLayout.addView(year_tv);
+        linearLayout.addView(month_tv);
+        linearLayout.addView(day_tv);
+
+        add_date_ll.addView(linearLayout);
+
+        select_date_btn.setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void onTimeSet(com.wdullaer.materialdatetimepicker.time.TimePickerDialog view, int hourOfDay, int minute, int second) {
+        String time = "You picked the following time: "+hourOfDay+"h"+minute+"m"+second;
+        Toast.makeText(this, time, Toast.LENGTH_SHORT).show();
+
     }
 }

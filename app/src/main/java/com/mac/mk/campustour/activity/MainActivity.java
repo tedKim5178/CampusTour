@@ -128,10 +128,10 @@ public class MainActivity extends AppCompatActivity
                 // signed in user can be handled in the listener.
                 if (!task.isSuccessful()) {
                     Log.w(TAG, "signInWithCredential", task.getException());
-                    Toast.makeText(getApplicationContext(), "Authentication failed.",
+                    Toast.makeText(getApplicationContext(), "인증 실패. 계정을 확인해주세요.",
                             Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(getApplicationContext(), "Authentication success.",
+                    Toast.makeText(getApplicationContext(), "캠퍼스 투어에 오신것을 환영합니다.",
                             Toast.LENGTH_SHORT).show();
                     SharedPreferences setting = getSharedPreferences("setting", 0);
                     SharedPreferences.Editor editor = setting.edit();

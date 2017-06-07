@@ -132,7 +132,7 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
         String userId = setting.getString("key", null);
 
         // 만약 내가 생성한 투어라면 현재 레이아웃에 버튼을 하나 더 생성해준다
-        if(tour.gettWriterId().equals(userId)){
+        if(tour.gettWriterId().equals(userId) && !tour.isOccupied()){
             Button button = new Button(this);
             LinearLayout.LayoutParams ll= new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             button.setText("투어 모집 마감");
@@ -166,7 +166,7 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
         // writer detail
         show_writer_name_tv.setText(tour.gettWriter());
         show_writer_contact_tv.setText(tour.gettContact());
-        show_writer_email_tv.setText(tour.gettWrtierEmail());
+        show_writer_email_tv.setText(tour.gettWriterEmail());
 
         // universito logo
         FirebaseStorage storage = FirebaseStorage.getInstance();
