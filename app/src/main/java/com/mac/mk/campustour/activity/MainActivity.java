@@ -112,6 +112,9 @@ public class MainActivity extends AppCompatActivity
 
             // Firebase Auth..
             firebaseAuthWithGoogle(acct);
+        }else {
+            Toast.makeText(getApplicationContext(), "로그인 실패",
+                    Toast.LENGTH_SHORT).show();
         }
 
     }

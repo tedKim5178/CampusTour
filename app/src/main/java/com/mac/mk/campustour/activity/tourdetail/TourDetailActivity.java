@@ -86,6 +86,8 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
     TextView show_writer_email_tv;
     @Bind(R.id.tour_detail_layout)
     LinearLayout tour_detail_layout;
+    @Bind(R.id.show_date_tv)
+    TextView show_date_tv;
 
     // Objects
     Tour tour;
@@ -148,6 +150,7 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference occupiedRef = database.getReference("tour").child(tourKey).child("occupied");
                     occupiedRef.setValue(true);
+                    finish();
                 }
             });
             tour_detail_layout.addView(button);
@@ -167,6 +170,9 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
         show_writer_name_tv.setText(tour.gettWriter());
         show_writer_contact_tv.setText(tour.gettContact());
         show_writer_email_tv.setText(tour.gettWriterEmail());
+
+        // date detail
+        show_date_tv.setText(tour.gettDate());
 
         // universito logo
         FirebaseStorage storage = FirebaseStorage.getInstance();

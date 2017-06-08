@@ -337,47 +337,20 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
         Toast.makeText(this, date + " 선택!", Toast.LENGTH_SHORT).show();
 
         // 동적으로 날짜 정보 추가해주기
-        LinearLayout.LayoutParams layoutLP = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.setLayoutParams(layoutLP);
 
-        TextView year_tv = new TextView(this);
-        TextView month_tv = new TextView(this);
-        TextView day_tv = new TextView(this);
 
-        LinearLayout.LayoutParams yearLP = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
-        LinearLayout.LayoutParams monthLP = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
-        LinearLayout.LayoutParams dayLP = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
-        yearLP.weight = 1;
-        monthLP.weight = 1;
-        dayLP.weight = 1;
+        TextView date_tv = new TextView(this);
 
-        year_tv.setText(String.valueOf(year) + "년");
-        month_tv.setText(String.valueOf(monthOfYear+1) + "월");
-        day_tv.setText(String.valueOf(dayOfMonth) + "일");
+        LinearLayout.LayoutParams date_ll = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        year_tv.setTextColor(Color.BLACK);
-        month_tv.setTextColor(Color.BLACK);
-        day_tv.setTextColor(Color.BLACK);
 
-        year_tv.setTextSize(18);
-        month_tv.setTextSize(18);
-        day_tv.setTextSize(18);
+        date_tv.setText(date);
+        date_tv.setTextColor(Color.BLACK);
+        date_tv.setTextSize(18);
+        date_tv.setGravity(Gravity.CENTER);
+        date_tv.setLayoutParams(date_ll);
 
-        year_tv.setGravity(Gravity.RIGHT);
-        month_tv.setGravity(Gravity.RIGHT);
-        day_tv.setGravity(Gravity.RIGHT);
-
-        year_tv.setLayoutParams(yearLP);
-        month_tv.setLayoutParams(monthLP);
-        day_tv.setLayoutParams(dayLP);
-
-        linearLayout.addView(year_tv);
-        linearLayout.addView(month_tv);
-        linearLayout.addView(day_tv);
-
-        add_date_ll.addView(linearLayout);
+        add_date_ll.addView(date_tv);
 
         select_date_btn.setVisibility(View.GONE);
 

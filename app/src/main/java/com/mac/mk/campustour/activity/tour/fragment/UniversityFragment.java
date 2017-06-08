@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -26,18 +28,30 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mac.mk.campustour.R;
+import com.mac.mk.campustour.activity.data.Restaurant;
 import com.mac.mk.campustour.activity.data.Tour;
 import com.mac.mk.campustour.activity.maketour.MakeTourActivity;
 import com.mac.mk.campustour.activity.tour.adapter.TourAdapter;
 import com.mac.mk.campustour.activity.tourdetail.TourDetailActivity;
 import com.melnykov.fab.FloatingActionButton;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by mk on 2017. 6. 5..
@@ -53,13 +67,17 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
     RecyclerView mRecyclerView;
     @Bind(R.id.floating_action_btn)
     FloatingActionButton mFloatingBtn;
-
+    @Bind(R.id.search_tourlist_btn)
+    Button search_tourlist_btn;
+    @Bind(R.id.search_tourlist_et)
+    EditText search_tourlist_et;
 
     // Objects
     private TourAdapter tourAdapter;
-    private ArrayList<Tour> tourItemList;
-    private HashMap<String, Tour> hm;
+    private ArrayList<Tour> tourItemList = new ArrayList<>();
+    private LinkedHashMap<String, Tour> lhm;
 
+    int count = 0;
 
     @Nullable
     @Override
@@ -72,11 +90,68 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
     }
 
     @Override
+    public void onResume() {
+
+        tourItemList.clear();
+        // get tour data from firebase
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("tour");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+//                HashMap hm = (HashMap) dataSnapshot.getValue();
+//                LinkedHashMap newMap = new LinkedHashMap<>(hm);
+//
+//                Set<Map.Entry<String, LinkedHashMap>> set = newMap.entrySet();
+//
+//                Iterator<Map.Entry<String, LinkedHashMap>> iterator = set.iterator();
+//                while(iterator.hasNext()){
+//                    Map.Entry entry = (Map.Entry) iterator.next();
+//                    String tempKey = (String) entry.getKey();
+//                    HashMap tempValue = (HashMap) entry.getValue();
+//                    Gson gson = new Gson();
+//                    String json = gson.toJson(tempValue);
+//                    Tour tempTour = gson.fromJson(json, Tour.class);
+//
+//                    lhm.put(tempKey, tempTour);
+//                }
+
+                for(DataSnapshot child : dataSnapshot.getChildren()){
+                    Log.d(TAG, "파이어베이스테스트 : " + child.getValue());
+                    Gson gson = new Gson();
+                    String json = gson.toJson(child.getValue());
+                    Tour tempTour = gson.fromJson(json, Tour.class);
+                    lhm.put(child.getKey(), tempTour);
+                    tourItemList.add(tempTour);
+                }
+                if(tourAdapter != null){
+                    tourAdapter.notifyDataSetChanged();
+                }
+
+//                for(DataSnapshot child : dataSnapshot.getChildren()){
+//                    Log.d(TAG, "파이어베이스 테스트 신 포문 : " + child.getKey());
+//                    if(child.getKey().equals("restaurants")){
+//                        Restaurant restaurant = (Restaurant) child.getValue();
+//                    }else{
+//
+//                    }
+//                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        super.onResume();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        tourItemList = new ArrayList<>();
-        hm = new HashMap<>();
+        lhm = new LinkedHashMap<>();
 
         // recyclerview
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -91,21 +166,15 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                Tour tour = dataSnapshot.getValue(Tour.class);
-                hm.put(dataSnapshot.getKey(), tour);
-                tourItemList.add(tour);
-                tourAdapter.setTourItemList(tourItemList);
-                tourAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Log.d(TAG, "바보바보바보! " + dataSnapshot.getKey());
-                Tour tour = hm.get(dataSnapshot.getKey());
-                int index = tourItemList.indexOf(tour);
-                tourItemList.get(index).setOccupied((boolean)dataSnapshot.child("occupied").getValue());
-                tourAdapter.setTourItemList(tourItemList);
-                tourAdapter.notifyDataSetChanged();
+                if(lhm.get(dataSnapshot.getKey()) != null){
+                    Tour tour = lhm.get(dataSnapshot.getKey());
+                    tour.setOccupied((boolean)dataSnapshot.child("occupied").getValue());
+                }
             }
 
             @Override
@@ -122,9 +191,9 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
             public void onCancelled(DatabaseError databaseError) { }
         });
 
+
         tourAdapter = new TourAdapter(tourItemList, getActivity().getApplicationContext(), this);
         mRecyclerView.setAdapter(tourAdapter);
-
         mFloatingBtn.attachToRecyclerView(mRecyclerView);
 
         // 이벤트 적용
@@ -138,20 +207,67 @@ public class UniversityFragment extends Fragment implements TourAdapter.ListItem
 
     }
 
+    @OnClick({R.id.search_tourlist_btn, R.id.refresh_btn})
+    public void onClick(View view){
+        int viewId = view.getId();
+        switch (viewId){
+            case R.id.search_tourlist_btn : {
+                // 클릭하면
+                String query = search_tourlist_et.getText().toString();
+                if(query.length() == 0){
+                    Toast.makeText(getActivity().getApplicationContext(), "검색어를 입력해주세요", Toast.LENGTH_SHORT).show();
+                }else{
+                    // 검색어를 통해서 리스트 정렬
+                    // 전체 투어 목록은..해쉬맵에 있음
+                    tourItemList.clear();
+
+                    Collection v = lhm.values();
+                    Iterator iterator = v.iterator();
+                    while(iterator.hasNext()){
+                        Tour tempTour = (Tour)iterator.next();
+                        Log.d(TAG, "test" + tempTour.gettSchoolName());
+                        if(tempTour.gettSchoolName().contains(query)){
+
+                            tourItemList.add(tempTour);
+
+                        }
+                    }
+
+                    tourAdapter.setTourItemList(tourItemList);
+                    tourAdapter.notifyDataSetChanged();
+                }
+                break;
+            }
+            case R.id.refresh_btn :{
+                // refresh 즉 모든 투어 데이터 다 보여주기
+                tourItemList.clear();
+
+                Collection v = lhm.values();
+                Iterator iterator = v.iterator();
+                while(iterator.hasNext()){
+                    Tour tempTour = (Tour)iterator.next();
+                    tourItemList.add(tempTour);
+                    Log.d(TAG, "투어테스트 : " + tempTour.gettSchoolName());
+                }
+                tourAdapter.setTourItemList(tourItemList);
+                tourAdapter.notifyDataSetChanged();
+                break;
+            }
+        }
+    }
+
     @Override
     public void onListItemClick(Tour tour) {
-        Log.d(TAG, "프레그먼트테스트 onListItemClick in UniversityFragment");
         Intent intent = new Intent(getActivity().getApplicationContext(), TourDetailActivity.class);
         intent.putExtra("tour", tour);
         String key = (String) getKeyFromValue(tour);
-        Log.d(TAG, "바보바보 " + key);
         intent.putExtra("key", key);
         startActivity(intent);
     }
 
     public  Object getKeyFromValue(Object value) {
-        for (Object o : hm.keySet()) {
-            if (hm.get(o).equals(value)) {
+        for (Object o : lhm.keySet()) {
+            if (lhm.get(o).equals(value)) {
                 return o;
             }
         }

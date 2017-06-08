@@ -3,6 +3,37 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/search_tourlist_et"
+            android:hint="ex) 건국, 건국대, 건국대학교"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/search_tourlist_btn"
+            android:background="@drawable/ic_search_black"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="35dp"
+            android:layout_height="35dp" />
+
+        <Button
+            android:id="@+id/refresh_btn"
+            android:background="@drawable/ic_refresh"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="35dp"
+            android:layout_height="35dp" />
+
+
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/tour_recyclerview"
         android:layout_width="match_parent"

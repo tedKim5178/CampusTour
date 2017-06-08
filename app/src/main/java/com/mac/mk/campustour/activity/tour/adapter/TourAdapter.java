@@ -104,7 +104,7 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
         holder.tl_title_tv.setText(tourList.get(position).gettName());
         holder.tl_writerName_tv.setText(tourList.get(position).gettWriter());
         holder.tl_date_tv.setText(tourList.get(position).gettDate());
-        holder.tl_capacity_tv.setText(String.valueOf(tourList.get(position).getCapacity()));
+        holder.tl_capacity_tv.setText(String.valueOf(tourList.get(position).getCapacity()) + "명");
         holder.tl_uName_tv.setText(tourList.get(position).gettSchoolName());
         if(tourList.get(position).isOccupied()){
             // 참이면 마감

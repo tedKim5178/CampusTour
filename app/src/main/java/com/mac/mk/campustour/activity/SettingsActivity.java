@@ -1,10 +1,12 @@
 package com.mac.mk.campustour.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -85,9 +87,12 @@ public class SettingsActivity extends AppCompatActivity{
                         Intent intent = new Intent(getApplicationContext(), TourActivity.class);
                         intent.putExtra("user", user);
                         startActivityForResult(intent, 0);
+                        finish();
                     }
                 }else{
-                    userTypeSpinner.performClick();
+                    Log.d(TAG, "학생테스트 performClick 호출 전 : " + flag);
+                    startDialog();
+//                    userTypeSpinner.performClick();
                 }
 
             }
@@ -103,9 +108,11 @@ public class SettingsActivity extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-
+                Log.d(TAG, "학생테스트 : " + flag);
                 if(flag == 1){
+                    Log.d(TAG, "학생테스트 : flag == 1" + flag);
                     if(position == 0) {
+                        Log.d(TAG, "학생테스트 position 0 : " + flag);
                         Toast.makeText(getApplicationContext(), "고등학생", Toast.LENGTH_SHORT).show();
                         editor.putInt("type", HiGHSCHOOL);
                         editor.commit();
@@ -124,19 +131,18 @@ public class SettingsActivity extends AppCompatActivity{
                     // 값 정상적으로 들어오니까 파이어베이스에 추가
                     DatabaseReference mDatabase;
                     mDatabase = FirebaseDatabase.getInstance().getReference("user/" + key);
-//                    mDatabase.child("Email").setValue(email);
-//                    mDatabase.child("Name").setValue(name);
-//                    mDatabase.child("type").setValue(type);
                     User user = new User(email, name, type);
                     mDatabase.setValue(user);
 
                     Intent intent = new Intent(getApplicationContext(), TourActivity.class);
                     intent.putExtra("user", user);
                     startActivityForResult(intent, 0);
+                    finish();
                 }
 
                 if(flag == 0){
                     flag = 1;
+                    return ;
                 }
 
             }
@@ -147,4 +153,48 @@ public class SettingsActivity extends AppCompatActivity{
         });
 
     }
+
+    public void startDialog(){
+        //Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+        final CharSequence[] pType = {"고등학생", "대학생"};
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("선택하세요");
+        dialog.setSingleChoiceItems(pType, -1, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                Toast.makeText(getApplicationContext(), "Dialog OK!", Toast.LENGTH_SHORT).show();
+
+                if(item == 0) {
+                    Toast.makeText(getApplicationContext(), "고등학생", Toast.LENGTH_SHORT).show();
+                    editor.putInt("type", HiGHSCHOOL);
+                    editor.commit();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "대학생", Toast.LENGTH_SHORT).show();
+                    editor.putInt("type", UNIVERSITY);
+                    editor.commit();
+                }
+
+
+                int type = setting.getInt("type", 0);
+                Log.d(TAG, "타입테스트 : " + type);
+
+                // TODO :: 우선 데이터베이스 있는지 없는지 확인 하고 진행해야한다. Query문으로 해당 id값을 검색해보는걸로 될 듯 하다..!
+                // 값 정상적으로 들어오니까 파이어베이스에 추가
+                DatabaseReference mDatabase;
+                mDatabase = FirebaseDatabase.getInstance().getReference("user/" + key);
+//                    mDatabase.child("Email").setValue(email);
+//                    mDatabase.child("Name").setValue(name);
+//                    mDatabase.child("type").setValue(type);
+                User user = new User(email, name, type);
+                mDatabase.setValue(user);
+
+                Intent intent = new Intent(getApplicationContext(), TourActivity.class);
+                intent.putExtra("user", user);
+                startActivityForResult(intent, 0);
+            }
+        });
+        AlertDialog alert = dialog.create();
+        alert.show();
+    }
+
 }
