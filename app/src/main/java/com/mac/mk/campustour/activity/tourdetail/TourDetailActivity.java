@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -52,6 +54,7 @@ import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by mk on 2017. 6. 4..
@@ -66,6 +69,8 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
     // View Injection
     @Bind(R.id.sLogo_iv)
     ImageView sLogo_iv;
+    @Bind(R.id.writer_profile_pic_iv)
+    ImageView writer_profile_pic_iv;
     @Bind(R.id.show_sName_tv)
     TextView show_sName_tv;
     @Bind(R.id.show_sAddress_tv)
@@ -96,6 +101,7 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
     private RelativeLayout mapViewContainer;
     private SharedPreferences setting = null;
     private String tourKey = null;
+    private String userId = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -131,7 +137,12 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
 
         // get UserId
         setting = getSharedPreferences("setting", 0);
-        String userId = setting.getString("key", null);
+        userId = setting.getString("key", null);
+
+        // set user Profile Image
+        // imageView 보여주기..!
+        setProfileImage();
+
 
         // 만약 내가 생성한 투어라면 현재 레이아웃에 버튼을 하나 더 생성해준다
         if(tour.gettWriterId().equals(userId) && !tour.isOccupied()){
@@ -145,7 +156,6 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), "??", Toast.LENGTH_SHORT).show();
                     // 파이어베이스 접근해서 tour정보를 마감으로 바꿔줘야함..!
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference occupiedRef = database.getReference("tour").child(tourKey).child("occupied");
@@ -261,6 +271,35 @@ public class TourDetailActivity extends AppCompatActivity implements MapView.POI
             }
         }
         mapView.fitMapViewAreaToShowAllPOIItems();
+    }
+
+    public void setProfileImage(){
+
+        // profile Image를 위한 layout 미리 설정
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int size = Math.round(100 * dm.density);
+
+        LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(size, size);
+        writer_profile_pic_iv.setLayoutParams(ll);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference urlRef = database.getReference("user").child(tour.gettWriterId()).child("url");
+        urlRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String url = (String) dataSnapshot.getValue();
+                if(url == null){
+                    Glide.with(getApplicationContext()).load(R.drawable.ic_no_profile_img).bitmapTransform(new CropCircleTransformation(getApplicationContext())).into(writer_profile_pic_iv);
+                }else{
+                    Glide.with(getApplicationContext()).load(url).bitmapTransform(new CropCircleTransformation(getApplicationContext())).into(writer_profile_pic_iv);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

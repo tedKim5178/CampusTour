@@ -191,6 +191,7 @@ public class SettingsActivity extends AppCompatActivity{
                 Intent intent = new Intent(getApplicationContext(), TourActivity.class);
                 intent.putExtra("user", user);
                 startActivityForResult(intent, 0);
+                finish();
             }
         });
         AlertDialog alert = dialog.create();

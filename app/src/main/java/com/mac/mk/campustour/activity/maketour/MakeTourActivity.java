@@ -79,8 +79,8 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
     private final static int MOVE_TO_MAP_ACTIVITY = 9001;
 
     // View Injection
-    @Bind(R.id.writer_et)
-    EditText writer_et;
+    @Bind(R.id.writer_tv)
+    TextView writer_tv;
     @Bind(R.id.name_et)
     EditText name_et;
     @Bind(R.id.sName_auto_et)
@@ -179,7 +179,7 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
         writerId = setting.getString("key", null);
         writerEmail = setting.getString("email", null);
         // set User Name
-        writer_et.setText(writer);
+        writer_tv.setText(writer);
 
         // set toolbar
         setSupportActionBar(toolbar);

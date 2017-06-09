@@ -69,8 +69,8 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
     public void init(){
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://firebase-campustour.appspot.com");
-
     }
+
     @Override
     public TourAdapter.TourItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).
@@ -85,7 +85,9 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
 
         Log.d(TAG, "adapterTest : " + position + tourList.get(position).gettName() + " , " + tourList.get(position).gettWriter());
 
-        String path = SchoolNameEngKor.schoolNameEngKor.get(tourList.get(position).gettSchoolName()) + ".png";
+        int newPosition = 0;
+        newPosition = tourList.size() - position -1;
+        String path = SchoolNameEngKor.schoolNameEngKor.get(tourList.get(newPosition).gettSchoolName()) + ".png";
         imageRef = storageRef.child(path);
         imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>(){
 
@@ -101,12 +103,12 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
             }
         });
 
-        holder.tl_title_tv.setText(tourList.get(position).gettName());
-        holder.tl_writerName_tv.setText(tourList.get(position).gettWriter());
-        holder.tl_date_tv.setText(tourList.get(position).gettDate());
-        holder.tl_capacity_tv.setText(String.valueOf(tourList.get(position).getCapacity()) + "명");
-        holder.tl_uName_tv.setText(tourList.get(position).gettSchoolName());
-        if(tourList.get(position).isOccupied()){
+        holder.tl_title_tv.setText(tourList.get(newPosition).gettName());
+        holder.tl_writerName_tv.setText(tourList.get(newPosition).gettWriter());
+        holder.tl_date_tv.setText(tourList.get(newPosition).gettDate());
+        holder.tl_capacity_tv.setText(String.valueOf(tourList.get(newPosition).getCapacity()) + "명");
+        holder.tl_uName_tv.setText(tourList.get(newPosition).gettSchoolName());
+        if(tourList.get(newPosition).isOccupied()){
             // 참이면 마감
             holder.tl_occupied_tv.setText("마감");
         }else{
@@ -147,7 +149,7 @@ public class TourAdapter extends RecyclerView.Adapter<TourAdapter.TourItemViewHo
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            Tour tour = tourList.get(position);
+            Tour tour = tourList.get(tourList.size() -1 - position);
             mOnClickListener.onListItemClick(tour);
         }
     }

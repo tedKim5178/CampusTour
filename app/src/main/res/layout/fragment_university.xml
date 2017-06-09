@@ -4,6 +4,8 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -16,6 +18,8 @@
             android:layout_height="wrap_content" />
 
         <Button
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:id="@+id/search_tourlist_btn"
             android:background="@drawable/ic_search_black"
             android:layout_gravity="center"

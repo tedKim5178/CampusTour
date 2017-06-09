@@ -23,6 +23,16 @@ public class User implements Serializable{
     private String name;
     // 고등학생 or 대학생
     private int type;
+    // 프로필 사진
+    private String url = "";
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getEmail() {
         return email;

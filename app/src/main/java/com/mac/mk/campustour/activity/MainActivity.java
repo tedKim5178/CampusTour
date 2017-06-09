@@ -58,10 +58,13 @@ public class MainActivity extends AppCompatActivity
                 .requestIdToken("570427040889-0gl4i1bsjdfqdj1ntfq4ds1apu631m2m.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+
+        mGoogleApiClient = GoogleClient.getInstance(this, gso);
+
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .enableAutoManage(this, this)
+//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+//                .build();
 
         // Firebase
         mAuth = FirebaseAuth.getInstance();

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:gravity="center"
+        android:text="Profile"
+        android:textSize="18dp"
+        android:textColor="#fff"
+        android:background="?attr/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:layout_width="150dp"
+            android:layout_height="150dp" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/chProfileBtn"
+        android:text="프로필 이미지 변경"
+        android:background="@drawable/btn_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RadioGroup
+        android:id="@+id/studentsGroup"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/highschool"
+            android:layout_weight="1"
+
+            android:text="고등학생"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:id="@+id/university"
+            android:layout_weight="1"
+            android:text="대학생"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RadioGroup>
+    <LinearLayout
+        android:paddingTop="6dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:background="?attr/colorPrimary"
+            android:layout_margin="4dp"
+            android:id="@+id/setbtn"
+            android:text="변경"
+            android:textColor="#fff"
+            android:textSize="15dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:background="?attr/colorPrimary"
+            android:layout_margin="4dp"
+            android:text="취소"
+            android:textColor="#fff"
+            android:textSize="15dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>
