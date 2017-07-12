@@ -111,6 +111,7 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
     Tour tour = null;
     private HashMap<Integer, Item> mTagItemMap = new HashMap<Integer, Item>();
     private ArrayList<Restaurant> restaurantArrayList = null;
+    private HashMap<Button, Restaurant> rHm = null;
 
     private SharedPreferences setting = null;
     private HashMap<String, String> hm = null;
@@ -119,6 +120,9 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
     private String writerId = null;
     private String writerEmail = null;
     private String date = null;
+
+    private int textview_id_base;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +173,7 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
         restaurantArrayList = new ArrayList<>();
         hm = new HashMap<>();
         schools = new ArrayList<>();
+        rHm = new HashMap<>();
 
         // - (하이픈) 자동으로
         contact_et.setInputType(android.text.InputType.TYPE_CLASS_PHONE);
@@ -264,6 +269,8 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
                 linearLayout.setOrientation(LinearLayout.HORIZONTAL);
                 TextView textView = new TextView(this);
                 final Button button = new Button(this);
+                rHm.put(button, restaurant);
+
                 LinearLayout.LayoutParams textViewLP = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -286,13 +293,18 @@ public class MakeTourActivity extends AppCompatActivity implements MapView.POIIt
                         LinearLayout parent = (LinearLayout)button.getParent();
                         restaurant_add_layout.removeView(parent);
 
+                        // 리스트에서 삭제
+                        Restaurant rTemp = rHm.get(button);
+                        restaurantArrayList.remove(rTemp);
                         // TODO:// 버튼, 텍스트뷰 관리 다시 해서 arraylist 에서 remove
                     }
                 });
-                textView.setId(restaurantArrayList.size());
+                textview_id_base++;
+                textView.setId(textview_id_base);
                 linearLayout.addView(textView);
                 linearLayout.addView(button);
                 restaurant_add_layout.addView(linearLayout);
+
 
                 // Setting layout
                 TextView setting_tv = (TextView) findViewById(restaurantArrayList.size());
